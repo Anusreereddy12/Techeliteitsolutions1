@@ -9,7 +9,12 @@ build/
 
 # Vite
 .vite/
+
+
 venv
+env
+
+
 # Logs
 logs
 *.log
