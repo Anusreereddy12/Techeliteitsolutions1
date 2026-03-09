@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User, Phone, Sparkles } from "lucide-react";
+import axios from "axios";
 
 interface EyeBallProps {
   size?: number; pupilSize?: number; maxDistance?: number;
@@ -168,13 +169,36 @@ export function Register() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) { alert("Passwords do not match!"); return; }
-    // TODO: Implement Django backend API call
-    console.log("Register data:", formData);
-    // API endpoint: POST /api/auth/register/
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/register/",
+      {
+        name: formData.firstName + " " + formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      }
+    );
+
+    console.log("Registration successful:", response.data);
+
+    alert("Registration successful!");
+
+    // redirect to login page
+    window.location.href = "/login";
+
+  } catch (error) {
+    console.error("Registration error:", error);
+    alert("Registration failed. Try again.");
+  }
+};
 
   const handleGoogleSignup = () => {
     // TODO: Implement Google OAuth

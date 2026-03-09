@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-react";
+import axios from "axios";
 
 interface EyeBallProps {
   size?: number; pupilSize?: number; maxDistance?: number;
@@ -183,17 +184,38 @@ export function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-    setTimeout(() => {
-      // TODO: Implement Django backend API call
-      console.log("Login data:", formData);
-      // API endpoint: POST /api/auth/login/
-      setIsLoading(false);
-    }, 300);
-  };
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  setError("");
+  setIsLoading(true);
+
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/login/",
+      {
+        email: formData.email,
+        password: formData.password,
+      }
+    );
+
+    console.log("Login success:", response.data);
+
+    // save token in local storage
+    localStorage.setItem("token", response.data.token);
+
+    alert("Login successful!");
+
+    // redirect to dashboard or home
+    window.location.href = "/";
+
+  } catch (err: any) {
+    console.error(err);
+    setError("Invalid email or password");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleGoogleLogin = () => {
     // TODO: Implement Google OAuth
