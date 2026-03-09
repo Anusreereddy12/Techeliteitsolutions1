@@ -1,6 +1,10 @@
 from django.urls import path
-from .views import contact
+from .views import contact, login, register
+from . import views
+
 
 urlpatterns = [
-    path('contact/', contact, name='contact'),
+    path('api/register/', views.register),
+    path('api/login/', views.login),
+    path('api/contact/', views.contact),
 ]
