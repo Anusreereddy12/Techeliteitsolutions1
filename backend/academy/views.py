@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, Contact, Course
 from .serializers import UserSerializer, ContactSerializer, CourseSerializer
+from .models import Contact
 
 @api_view(['POST'])
 def register(request):

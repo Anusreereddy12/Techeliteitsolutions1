@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.urls import path,include
+from academy import views
+from academy.views import contact
 from django.urls import path, include
 
 urlpatterns = [

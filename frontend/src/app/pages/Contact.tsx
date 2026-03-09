@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
+import axios from "axios";
 import {
   Phone, Mail, MapPin, Clock,
   Send, User, MessageSquare,
   ArrowUpRight,
 } from 'lucide-react';
+
 
 /* ─── animation helpers ────────────────────────────────────────────────────── */
 const fadeUp = (delay = 0) => ({
@@ -85,16 +87,47 @@ function InfoCard({
 export function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  setLoading(true);
+  setError("");
+
+  try {
+
+    await axios.post(
+      "http://127.0.0.1:8000/api/contact/",
+      {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      }
+    );
+
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
-    setForm({ name: '', email: '', message: '' });
-  };
+
+    setForm({
+      name: "",
+      email: "",
+      message: "",
+    });
+
+  } catch (err) {
+
+    console.error(err);
+    setError("Failed to send message. Please try again.");
+
+  } finally {
+    setLoading(false);
+  }
+};
 
   const inputStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.85)',
@@ -329,6 +362,7 @@ export function Contact() {
                   {/* Submit */}
                   <motion.button
                     type="submit"
+                    disabled={loading}
                     whileHover={{ scale: 1.01, y: -1 }}
                     whileTap={{ scale: 0.99 }}
                     className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-semibold text-sm transition-all duration-300"
@@ -345,7 +379,7 @@ export function Contact() {
                       (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(79,70,229,0.28)';
                     }}
                   >
-                    Submit
+                    {loading ? "Sending..." : "Submit"}
                   </motion.button>
                 </form>
               </div>
