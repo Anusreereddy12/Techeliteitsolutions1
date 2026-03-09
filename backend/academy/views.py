@@ -28,17 +28,3 @@ def contact(request):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
-
-
-@api_view(['GET'])
-def online_courses(request):
-    courses = Course.objects.filter(type='online')
-    serializer = CourseSerializer(courses, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def offline_courses(request):
-    courses = Course.objects.filter(type='offline')
-    serializer = CourseSerializer(courses, many=True)
-    return Response(serializer.data)
