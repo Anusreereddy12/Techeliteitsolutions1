@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'academy',
     'rest_framework',
     'corsheaders',
+    'adminpanel',
 ]
 
 MIDDLEWARE = [
