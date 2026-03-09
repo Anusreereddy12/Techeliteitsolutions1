@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'techelite_db',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
+        'USER': 'root',
+        'PASSWORD': 'VikasSql#2025',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '3306',
     }
 }
 
