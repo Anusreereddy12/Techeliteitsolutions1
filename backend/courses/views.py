@@ -1,11 +1,44 @@
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Course, Booking
 from .serializers import (
     CourseSerializer, CourseListSerializer,
     BookingSerializer,
 )
+from rest_framework.permissions import AllowAny
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def admin_enrollment_list(request):
+    """
+    GET /api/admin/enrollments/
+    Returns only bookings with booking_type='enrollment'
+    """
+    qs = Booking.objects.filter(booking_type='enrollment').order_by('-created_at')
+    return Response(BookingSerializer(qs, many=True).data)
+
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([AllowAny])
+def admin_enrollment_detail(request, pk: int):
+    """
+    GET   /api/admin/enrollments/<pk>/
+    PATCH /api/admin/enrollments/<pk>/  → update status
+    """
+    try:
+        obj = Booking.objects.get(pk=pk, booking_type='enrollment')
+    except Booking.DoesNotExist:
+        return Response({'error': 'Not found.'}, status=404)
+
+    if request.method == 'GET':
+        return Response(BookingSerializer(obj).data)
+
+    ser = BookingSerializer(obj, data=request.data, partial=True)
+    if ser.is_valid():
+        ser.save()
+        return Response(ser.data)
+    return Response(ser.errors, status=400)
 #  ── Admin: Course CRUD ──────────────────────────────────────────────────────
 
 class AdminCourseListCreateView(generics.ListCreateAPIView):

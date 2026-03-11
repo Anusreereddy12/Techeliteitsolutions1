@@ -3,14 +3,15 @@ import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, BookOpen, Calendar, Megaphone,
   ChevronLeft, ChevronRight, LogOut, Bell,
-  Globe, Menu, ExternalLink,
+  Globe, Menu, ExternalLink, GraduationCap,
 } from 'lucide-react';
 
 const NAV = [
-  { to: '/admin',               icon: LayoutDashboard, label: 'Dashboard',     exact: true  },
-  { to: '/admin/courses',       icon: BookOpen,        label: 'Courses',       exact: false },
-  { to: '/admin/bookings',      icon: Calendar,        label: 'Bookings',      exact: false },
-  { to: '/admin/announcements', icon: Megaphone,       label: 'Announcements', exact: false },
+  { to: '/admin',                icon: LayoutDashboard, label: 'Dashboard',     exact: true  },
+  { to: '/admin/courses',        icon: BookOpen,        label: 'Courses',       exact: false },
+  { to: '/admin/bookings',       icon: Calendar,        label: 'Bookings',      exact: false },
+  { to: '/admin/enrollments',    icon: GraduationCap,   label: 'Enrollments',   exact: false },
+  { to: '/admin/announcements',  icon: Megaphone,       label: 'Announcements', exact: false },
 ];
 
 export function AdminLayout() {
@@ -25,7 +26,7 @@ export function AdminLayout() {
   })();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/admin/stats/')
+    fetch('/api/admin/stats/')
       .then(r => r.ok ? r.json() : null)
       .then(d => d && setPending(d.pending_bookings ?? 0))
       .catch(() => {});
@@ -43,7 +44,6 @@ export function AdminLayout() {
   const avatar = (user?.name || user?.email || 'A')[0].toUpperCase();
   const displayName = user?.name || user?.email?.split('@')[0] || 'Admin';
 
-  // ── Sidebar inner ──────────────────────────────────────────────────────────
   const SidebarInner = ({ mini }: { mini: boolean }) => (
     <div className="flex flex-col h-full">
 
@@ -62,7 +62,6 @@ export function AdminLayout() {
         )}
       </div>
 
-      {/* Divider */}
       <div className="mx-3 h-px bg-white/[0.07] mb-4" />
 
       {/* Nav */}
@@ -81,13 +80,15 @@ export function AdminLayout() {
               <Icon size={18} className="shrink-0" />
               {!mini && <span className="text-sm font-medium flex-1">{label}</span>}
               {!mini && active && <div className="w-1.5 h-1.5 rounded-full bg-blue-300 shrink-0" />}
-              {/* badge */}
+
+              {/* Badge for Bookings */}
               {label === 'Bookings' && pendingCount > 0 && (
                 <span className={`${mini ? 'absolute top-1 right-1' : ''} min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center px-1`}>
                   {pendingCount}
                 </span>
               )}
-              {/* tooltip */}
+
+              {/* Tooltip for collapsed */}
               {mini && (
                 <div className="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-900 border border-white/10 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-xl">
                   {label}
@@ -105,7 +106,6 @@ export function AdminLayout() {
       <div className="px-2 pb-4 mt-4 space-y-0.5">
         <div className="mx-1 h-px bg-white/[0.07] mb-3" />
 
-        {/* View site */}
         <Link to="/" onClick={() => setMobileOpen(false)}
           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-white/[0.06] hover:text-white transition-all ${mini ? 'justify-center px-2' : ''}`}
         >
@@ -118,7 +118,6 @@ export function AdminLayout() {
           )}
         </Link>
 
-        {/* Logout */}
         <button onClick={handleLogout}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-400/80 hover:bg-rose-500/10 hover:text-rose-400 transition-all ${mini ? 'justify-center px-2' : ''}`}
         >
@@ -126,7 +125,6 @@ export function AdminLayout() {
           {!mini && <span className="text-sm font-medium">Logout</span>}
         </button>
 
-        {/* User card */}
         {!mini && (
           <div className="flex items-center gap-2.5 px-3 py-2.5 mt-1 rounded-xl bg-white/[0.04] border border-white/[0.06]">
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-black shrink-0">
@@ -142,7 +140,6 @@ export function AdminLayout() {
     </div>
   );
 
-  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="flex h-screen bg-[#f1f5f9] overflow-hidden" style={{ fontFamily: "'Exo 2', sans-serif" }}>
 
@@ -152,8 +149,6 @@ export function AdminLayout() {
         style={{ background: 'linear-gradient(165deg, #0d1526 0%, #111827 50%, #0f1e35 100%)' }}
       >
         <SidebarInner mini={collapsed} />
-
-        {/* collapse toggle */}
         <button onClick={() => setCollapsed(v => !v)}
           className="absolute -right-3 top-[88px] w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all z-10 shadow-lg"
         >
@@ -182,7 +177,6 @@ export function AdminLayout() {
             <button onClick={() => setMobileOpen(true)} className="lg:hidden text-slate-500 hover:text-slate-700 p-1">
               <Menu size={20} />
             </button>
-            {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-sm">
               <span className="text-slate-400 text-xs">Admin</span>
               <span className="text-slate-300 text-xs">/</span>
@@ -210,7 +204,7 @@ export function AdminLayout() {
           </div>
         </header>
 
-        {/* Page */}
+        {/* Page content */}
         <main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>

@@ -6,7 +6,7 @@ import {
   Globe, MapPin, TrendingUp, XCircle,
 } from 'lucide-react';
 
-const API = 'http://127.0.0.1:8000';
+const API = '';
 
 interface Stats {
   total_courses: number; active_courses: number;
@@ -125,9 +125,9 @@ export function AdminDashboard() {
                 </h2>
                 <div className="space-y-2">
                   {[
-                    { to: '/admin/courses',       icon: BookOpen, bg: 'blue',   label: 'Manage Courses',   sub: 'Add, edit, delete'           },
-                    { to: '/admin/bookings',       icon: Calendar, bg: 'violet', label: 'View Bookings',    sub: `${stats.pending_bookings} pending` },
-                    { to: '/admin/announcements',  icon: TrendingUp, bg: 'emerald', label: 'Announcements', sub: 'Update banner bar'           },
+                    { to: '/admin/courses',       icon: BookOpen,   bg: 'blue',    label: 'Manage Courses',   sub: 'Add, edit, delete'                },
+                    { to: '/admin/bookings',       icon: Calendar,   bg: 'violet',  label: 'View Bookings',    sub: `${stats.pending_bookings} pending` },
+                    { to: '/admin/announcements',  icon: TrendingUp, bg: 'emerald', label: 'Announcements',    sub: 'Update banner bar'                },
                   ].map(({ to, icon: Icon, bg, label, sub }) => (
                     <Link key={to} to={to}
                       className={`flex items-center gap-3 p-3.5 rounded-xl border border-transparent hover:border-${bg}-100 hover:bg-${bg}-50 transition-all group`}

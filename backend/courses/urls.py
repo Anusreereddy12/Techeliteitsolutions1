@@ -1,5 +1,3 @@
-# Replace your courses/urls.py with this
-
 from django.urls import path
 from . import views
 
@@ -18,4 +16,8 @@ urlpatterns = [
     path('api/admin/courses/<slug:slug>/',          views.AdminCourseDetailView.as_view()),
     path('api/admin/bookings/',                     views.AdminBookingListView.as_view()),
     path('api/admin/bookings/<int:pk>/',            views.AdminBookingDetailView.as_view()),
+
+    # Enrollments — filtered bookings with booking_type='enrollment'
+    path('api/admin/enrollments/',          views.admin_enrollment_list),
+    path('api/admin/enrollments/<int:pk>/', views.admin_enrollment_detail),
 ]

@@ -6,6 +6,7 @@ import { AdminLayout }        from './pages/admin/Adminlayout';
 import { AdminDashboard }     from './pages/admin/AdminDashboard';
 import { AdminCourses }       from './pages/admin/AdminCourses';
 import { AdminBookings }      from './pages/admin/AdminBookings';
+import { AdminEnrollments }   from './pages/admin/AdminEnrollments';
 import { AdminAnnouncements } from './pages/admin/Adminannouncements';
 
 // Public pages
@@ -22,7 +23,6 @@ import { Login }          from './pages/Login';
 import { Register }       from './pages/Register';
 import { Profile }        from './pages/Profile';
 
-// Wrapper that adds the public nav/footer shell around child routes via <Outlet>
 function PublicLayout() {
   const location = useLocation();
   const hideFooter = ['/login', '/register'].includes(location.pathname);
@@ -43,15 +43,16 @@ function PublicLayout() {
 export default function App() {
   return (
     <Routes>
-      {/* ── Admin: full-screen layout with sidebar, no public nav ── */}
+      {/* ── Admin ── */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index              element={<AdminDashboard />} />
+        <Route index                element={<AdminDashboard />} />
         <Route path="courses"       element={<AdminCourses />} />
         <Route path="bookings"      element={<AdminBookings />} />
+        <Route path="enrollments"   element={<AdminEnrollments />} />
         <Route path="announcements" element={<AdminAnnouncements />} />
       </Route>
 
-      {/* ── Public: announcement bar + nav + footer ── */}
+      {/* ── Public ── */}
       <Route element={<PublicLayout />}>
         <Route path="/"                   element={<Home />} />
         <Route path="/services"           element={<Services />} />

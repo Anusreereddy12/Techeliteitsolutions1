@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Search, CheckCircle, XCircle, Clock, Mail, Phone, Calendar } from 'lucide-react';
+import { Search, CheckCircle, XCircle, Mail, Phone, Calendar } from 'lucide-react';
+
+const API = '';
 
 interface Enrollment {
   id: number; name: string; email: string; phone: string;
   course: string; date: string; status: string; amount: string;
 }
-
-const API = 'http://127.0.0.1:8000';
 
 export function AdminEnrollments() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
@@ -65,7 +65,6 @@ export function AdminEnrollments() {
 
         {error && <div className="mb-4 px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">{error}</div>}
 
-        {/* Filter tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {(Object.entries(counts) as [string, number][]).map(([s, c]) => (
             <button key={s} onClick={() => setFilter(s as any)}
@@ -77,7 +76,6 @@ export function AdminEnrollments() {
           ))}
         </div>
 
-        {/* Search */}
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />

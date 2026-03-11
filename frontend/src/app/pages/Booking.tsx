@@ -15,31 +15,48 @@ export function Booking() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Booking submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        course: '',
-        mode: '',
-        date: '',
-        time: '',
-        message: '',
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/bookings/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          course_title: formData.course,
+          booking_type: 'demo',
+          preferred_date: formData.date || null,
+          preferred_time: formData.time || null,
+          message: formData.message,
+          mode: formData.mode,
+        }),
       });
-    }, 3000);
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(JSON.stringify(d));
+      }
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({ name: '', email: '', phone: '', course: '', mode: '', date: '', time: '', message: '' });
+      }, 3000);
+    } catch (err: any) {
+      setError('Failed to submit booking. Please try again.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -51,9 +68,7 @@ export function Booking() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Book Your Free Demo
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Book Your Free Demo</h1>
           <p className="text-xl text-gray-600">
             Take the first step towards your IT career. Schedule a free consultation with our experts.
           </p>
@@ -83,96 +98,56 @@ export function Booking() {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Personal Information */}
+              {error && (
+                <div className="px-4 py-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-sm">{error}</div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <User size={18} className="text-blue-600" />
-                    Full Name *
+                    <User size={18} className="text-blue-600" /> Full Name *
                   </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                    placeholder="John Doe"
-                  />
+                    placeholder="John Doe" />
                 </div>
-
                 <div>
                   <label htmlFor="email" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <Mail size={18} className="text-blue-600" />
-                    Email Address *
+                    <Mail size={18} className="text-blue-600" /> Email Address *
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                    placeholder="john@example.com"
-                  />
+                    placeholder="john@example.com" />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <Phone size={18} className="text-blue-600" />
-                  Phone Number *
+                  <Phone size={18} className="text-blue-600" /> Phone Number *
                 </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
+                <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                  placeholder="+1 (555) 123-4567"
-                />
+                  placeholder="+91 98765 43210" />
               </div>
 
-              {/* Course Selection */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="course" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Select Course *
-                  </label>
-                  <select
-                    id="course"
-                    name="course"
-                    value={formData.course}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                  >
+                  <label htmlFor="course" className="block text-sm font-semibold text-gray-700 mb-2">Select Course *</label>
+                  <select id="course" name="course" value={formData.course} onChange={handleChange} required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
                     <option value="">Choose a course</option>
-                    <option value="python">Python Full Stack</option>
-                    <option value="java">Java Full Stack</option>
-                    <option value="mern">MERN Stack</option>
-                    <option value="devops">DevOps</option>
-                    <option value="aws">AWS Cloud</option>
-                    <option value="data-science">Data Science</option>
+                    <option value="Python Full Stack">Python Full Stack</option>
+                    <option value="Java Full Stack">Java Full Stack</option>
+                    <option value="MERN Stack">MERN Stack</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="AWS Cloud">AWS Cloud</option>
+                    <option value="Data Science">Data Science</option>
                   </select>
                 </div>
-
                 <div>
-                  <label htmlFor="mode" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Preferred Mode *
-                  </label>
-                  <select
-                    id="mode"
-                    name="mode"
-                    value={formData.mode}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                  >
+                  <label htmlFor="mode" className="block text-sm font-semibold text-gray-700 mb-2">Preferred Mode *</label>
+                  <select id="mode" name="mode" value={formData.mode} onChange={handleChange} required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
                     <option value="">Select mode</option>
                     <option value="online">Online</option>
                     <option value="offline">Offline</option>
@@ -180,38 +155,21 @@ export function Booking() {
                 </div>
               </div>
 
-              {/* Schedule */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="date" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <Calendar size={18} className="text-blue-600" />
-                    Preferred Date *
+                    <Calendar size={18} className="text-blue-600" /> Preferred Date *
                   </label>
-                  <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    required
+                  <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                  />
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all" />
                 </div>
-
                 <div>
                   <label htmlFor="time" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <Clock size={18} className="text-blue-600" />
-                    Preferred Time *
+                    <Clock size={18} className="text-blue-600" /> Preferred Time *
                   </label>
-                  <select
-                    id="time"
-                    name="time"
-                    value={formData.time}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                  >
+                  <select id="time" name="time" value={formData.time} onChange={handleChange} required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
                     <option value="">Select time</option>
                     <option value="09:00">09:00 AM</option>
                     <option value="10:00">10:00 AM</option>
@@ -224,31 +182,23 @@ export function Booking() {
                 </div>
               </div>
 
-              {/* Additional Message */}
               <div>
                 <label htmlFor="message" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <MessageSquare size={18} className="text-blue-600" />
-                  Additional Message
+                  <MessageSquare size={18} className="text-blue-600" /> Additional Message
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} rows={4}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
-                  placeholder="Tell us about your goals and expectations..."
-                />
+                  placeholder="Tell us about your goals and expectations..." />
               </div>
 
-              {/* Submit Button */}
               <motion.button
                 type="submit"
+                disabled={loading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-60"
               >
-                Book Free Demo
+                {loading ? 'Submitting...' : 'Book Free Demo'}
               </motion.button>
 
               <p className="text-sm text-gray-500 text-center">

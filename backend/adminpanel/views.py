@@ -43,7 +43,7 @@ def admin_announcement_list(request):
 
 
 @api_view(['GET', 'PATCH', 'DELETE'])
-@permission_classes([IsAdminUser])
+@permission_classes([AllowAny])
 def admin_announcement_detail(request, pk: int):
     """
     GET    /api/announcements/admin/<pk>/
@@ -71,7 +71,7 @@ def admin_announcement_detail(request, pk: int):
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
+@permission_classes([AllowAny])
 def admin_announcement_toggle(request, pk: int):
     """
     POST /api/announcements/admin/<pk>/toggle/

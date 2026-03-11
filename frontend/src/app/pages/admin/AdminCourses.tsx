@@ -5,7 +5,7 @@ import {
   Clock, Users, DollarSign, Globe, MapPin, ToggleLeft, ToggleRight,
 } from 'lucide-react';
 
-const API = 'http://127.0.0.1:8000';
+const API = '';
 
 interface Course {
   id: number; title: string; slug: string; description: string;
@@ -194,7 +194,6 @@ export function AdminCourses() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }} transition={{ type: 'spring', stiffness: 350, damping: 30 }}
               className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95%] max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden"
             >
-              {/* Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
                 <h2 className="text-lg font-black text-slate-900" style={{ fontFamily: "'Exo 2', sans-serif" }}>
                   {editSlug ? 'Edit Course' : 'New Course'}
@@ -207,7 +206,6 @@ export function AdminCourses() {
               <div className="overflow-y-auto max-h-[75vh] px-6 py-5">
                 {error && <div className="mb-4 px-3 py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">{error}</div>}
                 <div className="space-y-4">
-                  {/* Title */}
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Title *</label>
                     <input value={form.title} onChange={e => F('title', e.target.value)}
@@ -216,7 +214,6 @@ export function AdminCourses() {
                     />
                   </div>
 
-                  {/* Type + Level */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Type *</label>
@@ -239,7 +236,6 @@ export function AdminCourses() {
                     </div>
                   </div>
 
-                  {/* Duration + Price */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Duration *</label>
@@ -257,7 +253,6 @@ export function AdminCourses() {
                     </div>
                   </div>
 
-                  {/* Students + Rating */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Students</label>
@@ -275,7 +270,6 @@ export function AdminCourses() {
                     </div>
                   </div>
 
-                  {/* Description */}
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Description *</label>
                     <textarea value={form.description} onChange={e => F('description', e.target.value)}
@@ -284,7 +278,6 @@ export function AdminCourses() {
                     />
                   </div>
 
-                  {/* Topics */}
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Topics (comma-separated)</label>
                     <input value={topicsInput} onChange={e => setTopicsInput(e.target.value)}
@@ -293,7 +286,6 @@ export function AdminCourses() {
                     />
                   </div>
 
-                  {/* Offline fields */}
                   {form.course_type === 'offline' && (
                     <div className="grid grid-cols-2 gap-3">
                       <div>
@@ -313,7 +305,6 @@ export function AdminCourses() {
                     </div>
                   )}
 
-                  {/* Active toggle */}
                   <label className="flex items-center gap-3 cursor-pointer" onClick={() => F('is_active', !form.is_active)}>
                     {form.is_active ? <ToggleRight size={26} className="text-blue-500" /> : <ToggleLeft size={26} className="text-slate-300" />}
                     <span className="text-sm font-semibold text-slate-700">{form.is_active ? 'Active' : 'Inactive'}</span>
@@ -321,7 +312,6 @@ export function AdminCourses() {
                 </div>
               </div>
 
-              {/* Footer */}
               <div className="flex gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/50">
                 <button onClick={closeForm}
                   className="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-100 transition-colors"

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, CheckCircle, XCircle, Clock, Mail, Phone, Calendar, BookOpen } from 'lucide-react';
 
-const API = 'http://127.0.0.1:8000';
+const API = '';
 
 interface Booking {
   id: number; name: string; email: string; phone: string;
@@ -110,7 +110,6 @@ export function AdminBookings() {
               className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between gap-4">
-                {/* Left */}
                 <div className="flex items-start gap-3 min-w-0 flex-1">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
                     {b.name.charAt(0)}
@@ -139,7 +138,6 @@ export function AdminBookings() {
                   </div>
                 </div>
 
-                {/* Right: status */}
                 <div className="shrink-0 flex flex-col items-end gap-2">
                   <select value={b.status} onChange={e => updateStatus(b.id, e.target.value)}
                     className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 outline-none cursor-pointer transition-all ${BADGE[b.status]}`}

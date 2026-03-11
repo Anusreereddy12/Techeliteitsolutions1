@@ -13,6 +13,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+# courses/serializers.py
 class BookingSerializer(serializers.ModelSerializer):
     course_title = serializers.CharField(source='course.title', read_only=True)
     class Meta:
@@ -20,3 +21,6 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = ['id', 'course', 'course_title', 'name', 'email', 'phone',
                   'booking_type', 'preferred_date', 'message', 'status', 'created_at']
         read_only_fields = ['status', 'created_at']
+        extra_kwargs = {
+            'course': {'required': False, 'allow_null': True},  # ← add this
+        }
