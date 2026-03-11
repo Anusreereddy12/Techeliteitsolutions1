@@ -184,43 +184,57 @@ export function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-  setError("");
-  setIsLoading(true);
-
-  try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/api/login/",
-      {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/login/", {
         email: formData.email,
         password: formData.password,
+      });
+
+      const { token, user } = response.data;
+
+      // Save token and user info
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // ── Admin check ──────────────────────────────────────────────
+      // Supports any of these common Django REST response shapes:
+      //   { user: { is_staff: true } }
+      //   { user: { is_admin: true } }
+      //   { user: { role: "admin" } }
+      //   { is_staff: true }  (flat)
+      const isAdmin =
+        user?.is_staff === true ||
+        user?.is_admin === true ||
+        user?.role === "admin" ||
+        response.data.is_staff === true ||
+        response.data.is_admin === true;
+
+      if (isAdmin) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/";
       }
-    );
 
-    console.log("Login success:", response.data);
-
-    // save token in local storage
-    localStorage.setItem("token", response.data.token);
-
-    alert("Login successful!");
-
-    // redirect to dashboard or home
-    window.location.href = "/";
-
-  } catch (err: any) {
-    console.error(err);
-    setError("Invalid email or password");
-  } finally {
-    setIsLoading(false);
-  }
-};
+    } catch (err: any) {
+      console.error(err);
+      // Show server error message if available, else generic fallback
+      const msg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        err.response?.data?.non_field_errors?.[0] ||
+        "Invalid email or password";
+      setError(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleGoogleLogin = () => {
-    // TODO: Implement Google OAuth
-    console.log("Google login clicked");
-    // API endpoint: GET /api/auth/google/
     window.location.href = "http://localhost:8000/api/auth/google/";
   };
 
@@ -229,7 +243,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     setFormData({ ...formData, [e.target.name]: value });
   };
 
-  /* ── shared input style ── */
   const inputStyle = {
     background: "rgba(255,255,255,0.04)",
     border: "1px solid rgba(255,255,255,0.1)",
@@ -243,18 +256,13 @@ const handleSubmit = async (e: React.FormEvent) => {
       {/* ════ LEFT — character panel ════ */}
       <div
         className="relative hidden lg:flex flex-col justify-between p-12 text-white overflow-hidden"
-        style={{
-  background: "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%)"
-}}
+        style={{ background: "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%)" }}
       >
-        {/* Radial glow behind characters */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 70% 60% at 50% 80%, rgba(108,63,245,0.18) 0%, transparent 70%)" }} />
-        {/* Soft vignette */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
 
-        {/* Brand */}
         <div className="relative z-10 flex items-center gap-2 text-lg font-bold">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center"
             style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)" }}>
@@ -263,17 +271,9 @@ const handleSubmit = async (e: React.FormEvent) => {
           <span>TechElite</span>
         </div>
 
-        {/* Characters — centred */}
         <div className="relative z-10 flex items-end justify-center" style={{ height: 500 }}>
           <CharacterPanel isTyping={isTyping} password={formData.password} showPassword={showPassword} />
         </div>
-
-        {/* Footer links */}
-        {/* <div className="relative z-10 flex items-center gap-8 text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>
-          <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-white transition-colors">Contact</a>
-        </div> */}
       </div>
 
       {/* ════ RIGHT — login form ════ */}
@@ -364,7 +364,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
             )}
 
-            {/* Submit — dark solid matching reference */}
+            {/* Submit */}
             <motion.button type="submit" disabled={isLoading}
               whileHover={{ scale: 1.015, y: -1 }} whileTap={{ scale: 0.985 }}
               className="w-full h-12 rounded-xl font-semibold text-white text-sm transition-all duration-200"
@@ -412,8 +412,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* API note */}
           <div className="mt-5 text-center text-[11px] space-y-0.5" style={{ color: "rgba(255,255,255,0.2)" }}>
-            <p>Backend API: POST /api/auth/login/</p>
-            <p>Expected response: {"{ \"token\": \"...\", \"user\": {...} }"}</p>
+            <p>Backend API: POST /api/login/</p>
+            <p>Admin redirect: /admin &nbsp;|&nbsp; User redirect: /</p>
           </div>
         </motion.div>
       </div>

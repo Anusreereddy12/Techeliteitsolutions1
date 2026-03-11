@@ -1,6 +1,4 @@
 from django.contrib import admin
-from .models import User, Contact, Course
+from .models import Contact
 
-admin.site.register(User)
 admin.site.register(Contact)
-admin.site.register(Course)

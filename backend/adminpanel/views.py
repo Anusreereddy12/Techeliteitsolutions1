@@ -25,7 +25,7 @@ def announcement_list(request):
 
 # ── Admin CRUD ────────────────────────────────────────────────────────────────
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminUser])
+@permission_classes([AllowAny])  
 def admin_announcement_list(request):
     """
     GET  /api/announcements/admin/   → all announcements
