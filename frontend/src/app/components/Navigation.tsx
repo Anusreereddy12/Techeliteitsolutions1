@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, LayoutDashboard, LogOut, User, Settings } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import logo from '../../assets/logo.png';
 
 interface UserData {
   name?: string;
@@ -88,21 +89,23 @@ export function Navigation() {
   };
 
   return (
-    <nav className={`w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-[72px]
+    <nav className={`w-full fixed top-[40px] left-0 right-0 z-50 transition-all duration-300 h-[72px]
       ${isScrolled
         ? 'bg-white/95 dark:bg-[#0d1117]/95 backdrop-blur-md shadow-md dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
         : 'bg-white dark:bg-[#0d1117] shadow-sm dark:shadow-none border-b border-transparent dark:border-[#21293a]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-full">
+        <div className="flex items-center justify-between h-full">
 
-          {/* ── Logo ── */}
-          <Link to="/" className="flex items-center">
-            <span className="text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight" style={{ fontFamily: "'Exo 2', sans-serif" }}>
-              Tech<span className="text-gray-900 dark:text-white">Elite</span>
-            </span>
-          </Link>
+         {/* ── Logo ── */}
+<Link to="/" className="flex items-center h-full pl-3 shrink-0">
+  <img
+    src={logo}
+    alt="TechElite IT Solutions"
+    className="h-14 w-auto object-contain object-left"
+  />
+</Link>
 
           {/* ── Desktop Links ── */}
           <div className="hidden lg:flex items-center justify-center flex-1 mx-8">
@@ -127,36 +130,37 @@ export function Navigation() {
               ))}
 
               {/* Courses dropdown */}
-              <div className="relative" onMouseEnter={() => setIsCoursesOpen(true)} onMouseLeave={() => setIsCoursesOpen(false)}>
-                <button className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-200
-                  ${location.pathname.startsWith('/courses')
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
-                  }`}>
-                  Courses
-                  <ChevronDown size={15} className={`transition-transform duration-200 ${isCoursesOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {isCoursesOpen && (
-                  <div className="absolute top-full left-0 w-52 mt-2 bg-white dark:bg-[#1c2230] rounded-2xl shadow-xl dark:shadow-[0_8px_40px_rgba(0,0,0,0.6)] border border-gray-100 dark:border-[#2d3748] py-2 z-50">
-                    {[
-                      { to: '/courses/online',     label: 'Online Courses'    },
-                      { to: '/courses/offline',    label: 'Offline Courses'   },
-                      { to: '/courses/placements', label: 'Placements'        },
-                    ].map(({ to, label }) => (
-                      <Link key={to} to={to}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
-                        {label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+<div className="relative group">
+  <button className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-200
+    ${location.pathname.startsWith('/courses')
+      ? 'text-blue-600 dark:text-blue-400'
+      : 'text-gray-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
+    }`}>
+    Courses
+    <ChevronDown size={15} className="transition-transform duration-200 group-hover:rotate-180" />
+  </button>
+
+  {/* Dropdown */}
+  <div className="absolute top-full left-0 mt-1 w-52 bg-white dark:bg-[#1c2230] rounded-2xl shadow-xl border border-gray-100 dark:border-[#2d3748] py-2 z-50
+    opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+
+    {[
+      { to: '/courses/online',     label: 'Online Courses'  },
+      { to: '/courses/offline',    label: 'Offline Courses' },
+      { to: '/courses/placements', label: 'Placements'      },
+    ].map(({ to, label }) => (
+      <Link key={to} to={to}
+        className="block px-4 py-2.5 text-sm text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
+        {label}
+      </Link>
+    ))}
+  </div>
+</div>
             </div>
           </div>
 
           {/* ── Right side ── */}
           <div className="hidden lg:flex items-center gap-3">
-            {/* Theme toggle */}
             <ThemeToggle variant="icon" />
 
             {user ? (

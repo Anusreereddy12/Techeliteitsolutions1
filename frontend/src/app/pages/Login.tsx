@@ -190,23 +190,19 @@ export function Login() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", {
+      // ── FIX 1: Correct endpoint — was /api/login/, now /api/auth/login/ ──
+      const response = await axios.post("/api/auth/login/", {
         email: formData.email,
         password: formData.password,
       });
 
       const { token, user } = response.data;
 
-      // Save token and user info
+      // Save token and user info to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // ── Admin check ──────────────────────────────────────────────
-      // Supports any of these common Django REST response shapes:
-      //   { user: { is_staff: true } }
-      //   { user: { is_admin: true } }
-      //   { user: { role: "admin" } }
-      //   { is_staff: true }  (flat)
+      // ── Admin check ──────────────────────────────────────────────────────
       const isAdmin =
         user?.is_staff === true ||
         user?.is_admin === true ||
@@ -214,18 +210,19 @@ export function Login() {
         response.data.is_staff === true ||
         response.data.is_admin === true;
 
+      // ── FIX 2: Redirect to /profile for regular users (was going to /) ──
       if (isAdmin) {
         window.location.href = "/admin";
       } else {
-        window.location.href = "/";
+        window.location.href = "/profile";
       }
 
     } catch (err: any) {
       console.error(err);
-      // Show server error message if available, else generic fallback
       const msg =
         err.response?.data?.detail ||
         err.response?.data?.message ||
+        err.response?.data?.error ||
         err.response?.data?.non_field_errors?.[0] ||
         "Invalid email or password";
       setError(msg);
@@ -412,8 +409,8 @@ export function Login() {
 
           {/* API note */}
           <div className="mt-5 text-center text-[11px] space-y-0.5" style={{ color: "rgba(255,255,255,0.2)" }}>
-            <p>Backend API: POST /api/login/</p>
-            <p>Admin redirect: /admin &nbsp;|&nbsp; User redirect: /</p>
+            <p>Backend API: POST /api/auth/login/</p>
+            <p>Admin redirect: /admin &nbsp;|&nbsp; User redirect: /profile</p>
           </div>
         </motion.div>
       </div>

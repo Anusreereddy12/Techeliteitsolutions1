@@ -19,8 +19,15 @@ export function Booking() {
         body: JSON.stringify({ name: formData.name, email: formData.email, phone: formData.phone, course_title: formData.course, booking_type: 'demo', preferred_date: formData.date || null, preferred_time: formData.time || null, message: formData.message, mode: formData.mode }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(JSON.stringify(d)); }
+
+      // ── Scroll to top so the success message is visible immediately ──
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setSubmitted(true);
-      setTimeout(() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', course: '', mode: '', date: '', time: '', message: '' }); }, 3000);
+
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({ name: '', email: '', phone: '', course: '', mode: '', date: '', time: '', message: '' });
+      }, 3000);
     } catch (err: any) { setError('Failed to submit booking. Please try again.'); }
     finally { setLoading(false); }
   };

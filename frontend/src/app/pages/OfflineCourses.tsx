@@ -13,7 +13,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 10 AM - 1 PM',
     description: 'Master VAPT with hands-on labs in our security range. No prior coding needed.',
     topics: ['Network Security', 'VAPT Tools', 'Ethical Hacking', 'CEH Prep', 'Zero Coding'],
-    price: '₹45,000',
     accent: 'from-blue-700 via-blue-600 to-cyan-500',
     img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80',
   },
@@ -23,7 +22,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 2 PM - 5 PM',
     description: 'Enterprise data pipelines using ADF, Synapse & Databricks in classroom labs.',
     topics: ['Azure ADF', 'Synapse', 'Databricks', 'Data Lakes', 'DP-203'],
-    price: '₹48,000',
     accent: 'from-red-600 via-red-500 to-orange-400',
     img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80',
   },
@@ -33,7 +31,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 10 AM - 1 PM',
     description: 'Secure AI/ML systems, harden LLMs, and master adversarial threat modeling.',
     topics: ['AI Threat Modeling', 'Adversarial ML', 'LLM Security', 'Red Teaming', 'AI Governance'],
-    price: '₹52,000',
     accent: 'from-amber-500 via-yellow-400 to-orange-400',
     img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80',
   },
@@ -43,7 +40,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 2 PM - 5 PM',
     description: 'CI/CD, containerization & multi-cloud infrastructure with real enterprise projects.',
     topics: ['Jenkins', 'Docker', 'Kubernetes', 'Terraform', 'Multi-Cloud'],
-    price: '₹50,000',
     accent: 'from-indigo-600 via-blue-600 to-violet-500',
     img: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=600&q=80',
   },
@@ -53,7 +49,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 6 PM - 8 PM',
     description: 'Deep-dive into InfoSec risk management, ISO 27001, and enterprise compliance.',
     topics: ['ISO 27001', 'Risk Management', 'CISSP Prep', 'GRC', 'Compliance'],
-    price: '₹42,000',
     accent: 'from-rose-600 via-red-500 to-red-600',
     img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80',
   },
@@ -63,7 +58,6 @@ const staticCourses = [
     schedule: 'Sat-Sun, 10 AM - 4 PM',
     description: 'Full AI & ML pipeline from Python basics to deploying production-ready models.',
     topics: ['Python', 'ML Algorithms', 'Deep Learning', 'NLP', 'Model Deployment'],
-    price: '₹55,000',
     accent: 'from-yellow-500 via-amber-400 to-yellow-500',
     img: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80',
   },
@@ -73,7 +67,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 6 PM - 8 PM',
     description: 'Core Java, Spring Boot, and Selenium automation testing for job-ready graduates.',
     topics: ['Core Java', 'Spring Boot', 'Selenium', 'JUnit', 'API Testing'],
-    price: '₹35,000',
     accent: 'from-blue-700 via-blue-600 to-indigo-600',
     img: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80',
   },
@@ -83,7 +76,6 @@ const staticCourses = [
     schedule: 'Mon-Fri, 10 AM - 1 PM',
     description: 'Operate in a live SOC environment — detect, investigate, and respond to real threats.',
     topics: ['SIEM Tools', 'Threat Detection', 'Incident Response', 'Log Analysis', 'SOC Workflow'],
-    price: '₹38,000',
     accent: 'from-slate-700 via-slate-600 to-blue-600',
     img: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&q=80',
   },
@@ -134,13 +126,9 @@ function CourseCard({ course, index }: { course: typeof staticCourses[0]; index:
             <span key={i} className="bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full text-xs font-medium border border-blue-100">{t}</span>
           ))}
         </div>
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div>
-            <div className="text-2xl font-black text-blue-600" style={{ fontFamily: "'Exo 2', sans-serif" }}>{course.price}</div>
-            <div className="text-xs text-gray-400">Full course fee</div>
-          </div>
+        <div className="pt-4 border-t border-gray-100">
           <Link to="/booking"
-            className={`flex items-center gap-1.5 bg-gradient-to-r ${course.accent} text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200`}>
+            className={`flex items-center justify-center gap-1.5 bg-gradient-to-r ${course.accent} text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 w-full`}>
             Book Seat <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

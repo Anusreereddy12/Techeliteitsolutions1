@@ -2,6 +2,7 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,10 +14,16 @@ export function Footer() {
 
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-black mb-2" style={{ fontFamily: "'Exo 2', sans-serif" }}>
-              <span className="text-blue-400 dark:text-blue-400">Tech</span>
-              <span className="text-white">Elite</span>
-            </h3>
+
+            {/* Logo */}
+            <div className="mb-5">
+              <img
+                src={logo}
+                alt="TechElite IT Solutions"
+                className="h-16 w-auto object-contain object-left"
+              />
+            </div>
+
             <p className="text-gray-400 dark:text-slate-500 text-sm mb-2 font-medium">www.techeliteitsolutions.com</p>
             <p className="text-gray-400 dark:text-slate-400 mb-5 max-w-sm text-sm leading-relaxed">
               Empowering individuals with cutting-edge IT skills for successful careers. Industry-leading training with guaranteed placement support.
@@ -58,10 +65,10 @@ export function Footer() {
             <h4 className="font-bold text-white dark:text-slate-100 mb-5 text-sm uppercase tracking-widest">Contact Us</h4>
             <ul className="space-y-3">
               {[
-                { icon: Phone,  text: '9133966888'                     },
-                { icon: Phone,  text: '9133454949'                     },
-                { icon: Mail,   text: 'info@techeliteitsolutions.com'   },
-                { icon: MapPin, text: 'Hyderabad, Telangana'            },
+                { icon: Phone,  text: '9133966888'                   },
+                { icon: Phone,  text: '9133454949'                   },
+                { icon: Mail,   text: 'info@techeliteitsolutions.com' },
+                { icon: MapPin, text: 'Hyderabad, Telangana'          },
               ].map(({ icon: Icon, text }, i) => (
                 <li key={i} className="flex items-start gap-2.5 text-sm text-gray-400 dark:text-slate-500">
                   <Icon size={14} className="mt-0.5 flex-shrink-0 text-blue-500 dark:text-blue-400" />

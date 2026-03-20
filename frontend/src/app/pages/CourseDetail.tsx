@@ -115,6 +115,8 @@ export function CourseDetail() {
         const d = await res.json();
         throw new Error(JSON.stringify(d));
       }
+      // Scroll to top so the success state is visible immediately
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setSubmitted(true);
       setTimeout(() => navigate('/'), 3000);
     } catch (err: any) {
@@ -417,21 +419,13 @@ export function CourseDetail() {
 
                 <AnimatePresence mode="wait">
                   {!showEnrollForm ? (
-                    /* ── Pricing card ── */
+                    /* ── Enroll card ── */
                     <motion.div key="pricing"
                       initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.25 }}
                       className="bg-white border border-blue-100 rounded-3xl p-8 shadow-xl"
                       style={{ boxShadow: '0 8px 40px rgba(37,99,235,0.12)' }}
                     >
-                      {/* Price */}
-                      <div className="text-center mb-6 pb-6 border-b border-gray-100">
-                        <div className="text-5xl font-black text-blue-600 mb-1" style={{ fontFamily: "'Exo 2', sans-serif" }}>
-                          {course.price}
-                        </div>
-                        <div className="text-gray-400 text-sm">One-time payment · No hidden fees</div>
-                      </div>
-
                       {/* Enroll CTA */}
                       <motion.button
                         onClick={() => setShowEnrollForm(true)}
@@ -445,8 +439,6 @@ export function CourseDetail() {
                         className="w-full flex items-center justify-center gap-2 border-2 border-blue-200 text-blue-600 py-3.5 rounded-2xl font-bold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 text-sm mb-5">
                         <Briefcase className="w-4 h-4" /> Book Free Demo First
                       </Link>
-
-                      <p className="text-xs text-gray-400 text-center mb-6">30-day money-back guarantee</p>
 
                       {/* Includes */}
                       <div className="border-t border-gray-100 pt-6">
@@ -539,13 +531,11 @@ export function CourseDetail() {
                             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none text-sm text-gray-800 placeholder-gray-400" />
                         </div>
 
-                        {/* Summary box */}
+                        {/* Course summary box (no price) */}
                         <div className={`bg-gradient-to-r ${course.accent} rounded-2xl p-4 text-white`}>
-                          <div className="flex justify-between items-center">
-                            <span className="font-bold text-sm opacity-90">Course Fee</span>
-                            <span className="text-2xl font-black">{course.price}</span>
-                          </div>
-                          <p className="text-xs opacity-75 mt-1">{course.title}</p>
+                          <p className="font-bold text-sm opacity-90">Enrolling in:</p>
+                          <p className="text-base font-black mt-0.5">{course.title}</p>
+                          <p className="text-xs opacity-75 mt-1">{course.duration} · {course.type === 'online' ? 'Online Live' : 'Classroom'}</p>
                         </div>
 
                         <motion.button type="submit" disabled={loading}
@@ -587,7 +577,7 @@ export function CourseDetail() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setShowEnrollForm(true); }}
                 className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-black shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
-                Enroll Now — {course.price} <ArrowRight className="w-5 h-5" />
+                Enroll Now <ArrowRight className="w-5 h-5" />
               </button>
               <Link to={`/courses/${course.type}`}
                 className="inline-flex items-center justify-center gap-2 border-2 border-white/25 text-white px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all duration-300">

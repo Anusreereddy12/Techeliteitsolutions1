@@ -27,18 +27,22 @@ import { Profile }        from './pages/Profile';
 function PublicLayout() {
   const location = useLocation();
   const hideFooter = ['/login', '/register'].includes(location.pathname);
-  return (
-    <>
-      <div className="w-full">
-        <AnnouncementBar />
-        <Navigation />
-      </div>
-      <div className="pt-[2px]">
-        <Outlet />
-        {!hideFooter && <Footer />}
-      </div>
-    </>
-  );
+
+return (
+  <>
+    {/* Fixed top section */}
+    <div className="fixed top-0 left-0 right-0 z-50">
+      <AnnouncementBar />
+      <Navigation />
+    </div>
+
+    {/* Push content down properly */}
+    <main className="mt-[112px]">
+      <Outlet />
+      {!hideFooter && <Footer />}
+    </main>
+  </>
+);
 }
 
 export default function App() {

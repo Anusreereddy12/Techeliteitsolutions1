@@ -46,7 +46,7 @@ const successStories = [
 ];
 
 const whatWeOffer = [
-  'Lifetime placement assistance',
+  'Placement assistance',
   '100% job guarantee programs',
   'Interview preparation workshops',
   'Resume and LinkedIn profile building',
@@ -185,7 +185,7 @@ export function Placements() {
       </section>
 
       {/* ── Success Stories ───────────────────────────────────────────────── */}
-      <section className="relative py-20 bg-white overflow-hidden">
+      {/* <section className="relative py-20 bg-white overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle, #2563eb 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -231,7 +231,7 @@ export function Placements() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── Hiring Partners ── light NetworkBackground ────────────────────── */}
       <section className="relative py-20 overflow-hidden">

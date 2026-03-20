@@ -3,19 +3,104 @@ import { Link } from 'react-router-dom';
 import {
   BookOpen, Award, Users, TrendingUp,
   Shield, ServerCog, Database, Lock, Brain, BarChart3,
-  ArrowRight,
+  ArrowRight, Building2, Star,
 } from 'lucide-react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { NetworkBackground } from '../components/NetworkBackground';
+import { AnnouncementBar } from '../components/AnnouncementBar';
 
 const programs = [
-  { title: 'Cyber Security',       description: 'Ethical hacking, network defence & top certifications like CEH and CISSP.', icon: Shield,    gradient: 'from-rose-500 to-orange-400',   shadow: 'shadow-rose-200',   glow: 'group-hover:shadow-rose-300'   },
-  { title: 'DevOps',               description: 'CI/CD, Docker, Kubernetes & cloud-native infrastructure at scale.',         icon: ServerCog, gradient: 'from-emerald-500 to-teal-400',  shadow: 'shadow-emerald-200', glow: 'group-hover:shadow-emerald-300' },
-  { title: 'Azure Data Engineering',description: 'ADF, Synapse & Databricks pipelines on Microsoft Azure.',                  icon: Database,  gradient: 'from-violet-500 to-purple-400', shadow: 'shadow-violet-200',  glow: 'group-hover:shadow-violet-300'  },
-  { title: 'SAP Security & GRC',   description: 'SAP access control, risk frameworks & enterprise compliance.',              icon: Lock,      gradient: 'from-orange-500 to-amber-400',  shadow: 'shadow-orange-200',  glow: 'group-hover:shadow-orange-300'  },
-  { title: 'Data Science',         description: 'ML models, neural networks & production AI with Python.',                   icon: Brain,     gradient: 'from-cyan-500 to-sky-400',      shadow: 'shadow-cyan-200',    glow: 'group-hover:shadow-cyan-300'    },
-  { title: 'Data Analyst',         description: 'Power BI, SQL & advanced visualisation for business insights.',             icon: BarChart3, gradient: 'from-blue-600 to-indigo-500',   shadow: 'shadow-blue-200',    glow: 'group-hover:shadow-blue-300'    },
+  { title: 'Cyber Security',        description: 'Ethical hacking, network defence & top certifications like CEH and CISSP.', icon: Shield,    gradient: 'from-rose-500 to-orange-400',   shadow: 'shadow-rose-200',   glow: 'group-hover:shadow-rose-300'   },
+  { title: 'DevOps',                description: 'CI/CD, Docker, Kubernetes & cloud-native infrastructure at scale.',         icon: ServerCog, gradient: 'from-emerald-500 to-teal-400',  shadow: 'shadow-emerald-200', glow: 'group-hover:shadow-emerald-300' },
+  { title: 'Azure Data Engineering', description: 'ADF, Synapse & Databricks pipelines on Microsoft Azure.',                  icon: Database,  gradient: 'from-violet-500 to-purple-400', shadow: 'shadow-violet-200',  glow: 'group-hover:shadow-violet-300'  },
+  { title: 'SAP Security & GRC',    description: 'SAP access control, risk frameworks & enterprise compliance.',              icon: Lock,      gradient: 'from-orange-500 to-amber-400',  shadow: 'shadow-orange-200',  glow: 'group-hover:shadow-orange-300'  },
+  { title: 'Data Science',          description: 'ML models, neural networks & production AI with Python.',                   icon: Brain,     gradient: 'from-cyan-500 to-sky-400',      shadow: 'shadow-cyan-200',    glow: 'group-hover:shadow-cyan-300'    },
+  { title: 'Data Analyst',          description: 'Power BI, SQL & advanced visualisation for business insights.',             icon: BarChart3, gradient: 'from-blue-600 to-indigo-500',   shadow: 'shadow-blue-200',    glow: 'group-hover:shadow-blue-300'    },
 ];
+
+const successStories = [
+  {
+    name: 'Rajesh Kumar', course: 'Python Full Stack', company: 'Amazon', package: '₹12 LPA',
+    testimonial: 'The placement support was excellent. Got placed in my dream company within 2 months of course completion.',
+  },
+  {
+    name: 'Priya Sharma', course: 'Data Science', company: 'Microsoft', package: '₹15 LPA',
+    testimonial: 'TechElite not only taught me technical skills but also prepared me for interviews. Forever grateful!',
+  },
+  {
+    name: 'Amit Patel', course: 'MERN Stack', company: 'Infosys', package: '₹8 LPA',
+    testimonial: 'From zero coding knowledge to getting placed in Infosys. The journey was amazing with TechElite.',
+  },
+  {
+    name: 'Sneha Reddy', course: 'Data Science', company: 'Google', package: '₹18 LPA',
+    testimonial: 'The curriculum was perfectly aligned with industry needs. The mock interviews and resume building sessions were incredibly helpful.',
+  },
+  {
+    name: 'Vikram Singh', course: 'DevOps', company: 'TCS', package: '₹10 LPA',
+    testimonial: 'The hands-on labs and real project experience at TechElite gave me the confidence to crack multiple interviews. Highly recommend!',
+  },
+  {
+    name: 'Ananya Iyer', course: 'Cyber Security', company: 'Wipro', package: '₹11 LPA',
+    testimonial: 'I had no background in security but the structured approach and expert mentors at TechElite made it easy to grasp complex concepts.',
+  },
+];
+
+function StarRating({ count = 5 }) {
+  return (
+    <div className="flex gap-0.5 mb-3">
+      {Array.from({ length: count }).map((_, i) => (
+        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+      ))}
+    </div>
+  );
+}
+
+function TestimonialCard({ story, index, featured = false }) {
+  const initials = story.name.split(' ').map(n => n[0]).join('');
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.55, delay: index * 0.12 }}
+      className={`relative flex flex-col bg-white dark:bg-[#1c2230] rounded-2xl p-6 shadow-sm transition-all duration-300
+        ${featured
+          ? 'border-2 border-blue-500 shadow-blue-100 dark:shadow-blue-900/30 shadow-md scale-[1.02]'
+          : 'border border-gray-200 dark:border-[#2d3748] hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md hover:shadow-blue-50 dark:hover:shadow-blue-900/20'
+        }`}
+    >
+      {featured && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-t-2xl" />
+      )}
+
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
+          {initials}
+        </div>
+        <div>
+          <p className="font-bold text-gray-900 dark:text-white text-base" style={{ fontFamily: "'Exo 2', sans-serif" }}>{story.name}</p>
+          <p className="text-blue-500 dark:text-blue-400 text-sm font-medium">{story.course}</p>
+        </div>
+      </div>
+
+      {/* Company + Package */}
+      <div className="flex items-center justify-between bg-gray-50 dark:bg-[#161b22] border border-gray-200 dark:border-[#2d3748] rounded-xl px-4 py-2.5 mb-4">
+        <div className="flex items-center gap-2 text-gray-600 dark:text-slate-400 text-sm">
+          <Building2 className="w-4 h-4 shrink-0" />
+          <span className="font-medium">{story.company}</span>
+        </div>
+        <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-lg">{story.package}</span>
+      </div>
+
+      {/* Stars + Quote */}
+      <StarRating />
+      <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed italic">
+        "{story.testimonial}"
+      </p>
+    </motion.div>
+  );
+}
 
 export function Home() {
   return (
@@ -201,6 +286,78 @@ export function Home() {
 
         <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-gray-100 dark:to-[#161b22] pointer-events-none" />
       </section>
+
+      {/* ─── Success Stories ─── */}
+      <section className="py-24 bg-white dark:bg-[#0d1117] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.035] dark:opacity-[0.04] pointer-events-none"
+          style={{ backgroundImage: `radial-gradient(circle, #2563eb 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Student Success
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4"
+              style={{ fontFamily: "'Exo 2', sans-serif" }}
+            >
+              Success{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500">Stories</span>
+            </h2>
+            <p className="text-lg text-gray-400 dark:text-slate-500 max-w-xl mx-auto">
+              Real students. Real results. See how TechElite transformed their careers.
+            </p>
+          </motion.div>
+
+          {/* First row — 3 cards, middle one featured */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {successStories.slice(0, 3).map((story, index) => (
+              <TestimonialCard
+                key={story.name}
+                story={story}
+                index={index}
+                featured={index === 1}
+              />
+            ))}
+          </div>
+
+          {/* Second row — 3 cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {successStories.slice(3).map((story, index) => (
+              <TestimonialCard
+                key={story.name}
+                story={story}
+                index={index + 3}
+                featured={false}
+              />
+            ))}
+          </div>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="text-center mt-12"
+          >
+            <Link
+              to="/booking"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3.5 rounded-xl text-base font-semibold shadow-md shadow-blue-200 dark:shadow-blue-900/30 hover:bg-blue-700 hover:shadow-blue-300 transition-all duration-300 group"
+            >
+              Start Your Journey
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
     </div>
   );
 }
